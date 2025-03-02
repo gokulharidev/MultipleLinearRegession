@@ -17,10 +17,12 @@ class LinearRegression:
         error = y - y_pred
         grad = self.huber_loss(error)
         
-        dw = (1 / x.shape[0]) * np.dot(x.T, grad)
+        dw = (1 / x.shape[0]) * np.dot(x.T, grad) + self.alpha * self.w
         db = (1 / x.shape[0]) * np.sum(grad)
         
-        self.w -= self.alpha * dw * self.lr
+        dw += np.sign(self.w) * self.alpha
+
+        self.w -= dw * self.lr
         self.b -= self.alpha * db * self.lr
         
     def fit(self, x, y):
